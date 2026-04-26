@@ -1,5 +1,6 @@
 [
   "debug_cam.json",
   "rgb_tool.json",
-  "hud_opacity.json"
+  "hud_opacity.json",
+  "fog.json"
 ]
