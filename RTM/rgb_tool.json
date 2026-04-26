@@ -18,4 +18,5 @@
         { "type": "rgb_input", "label": "Hair Color", "address": "30070070" }
       ]
     }
+  ]
 }
