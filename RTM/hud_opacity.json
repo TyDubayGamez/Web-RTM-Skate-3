@@ -1,0 +1,17 @@
+{
+    "sections": [
+        {
+            "title":"HUD Opacity",
+            "controls":[
+                {
+                "type": "float_input",
+                "label": "Hud Opacity",
+                "address": "0185B82C",
+                "filter": "numbers",
+                "force_type": "float",
+                "is_rgb": false
+                }
+            ]
+        }
+    ]
+}

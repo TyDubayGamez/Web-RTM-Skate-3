@@ -1,0 +1,63 @@
+{
+  "sections": [
+    {
+      "title": "Character Clothing RGB",
+      "controls": [
+        { "type": "rgb_input", "label": "Hat Color", "address": "30070030" },
+        { "type": "rgb_input", "label": "Shirt Color", "address": "30070270" },
+        { "type": "rgb_input", "label": "Pants Color", "address": "30070330" },
+        { "type": "rgb_input", "label": "Socks Color", "address": "300702B0" }
+      ]
+    },
+    {
+      "title": "Body & Hair RGB",
+      "controls": [
+        { "type": "rgb_input", "label": "Head/Skin Tone", "address": "300700B0" },
+        { "type": "rgb_input", "label": "Arms Tone", "address": "300700F0" },
+        { "type": "rgb_input", "label": "Legs Tone", "address": "30070130" },
+        { "type": "rgb_input", "label": "Hair Color", "address": "30070070" }
+      ]
+    },
+    {
+      "title": "Board & Accessories",
+      "controls": [
+        { "type": "rgb_input", "label": "Griptape Color", "address": "30085440" },
+        { "type": "rgb_input", "label": "Board Glow", "address": "30085450" },
+        { "type": "rgb_input", "label": "Wheel Glow", "address": "3008545C" },
+        { 
+          "type": "float_input", 
+          "label": "Truck Tightness", 
+          "address": "018E0804", 
+          "filter": "numbers", 
+          "force_type": "float" 
+        }
+      ]
+    },
+    {
+      "title": "World Physics",
+      "controls": [
+        { 
+          "type": "float_input", 
+          "label": "Gravity", 
+          "address": "018393D8", 
+          "filter": "numbers", 
+          "force_type": "float" 
+        },
+        { 
+          "type": "float_input", 
+          "label": "Game Speed", 
+          "address": "0001A2B0", 
+          "filter": "numbers", 
+          "force_type": "float" 
+        },
+        { 
+          "type": "float_input", 
+          "label": "Difficulty Level", 
+          "address": "300746DF", 
+          "filter": "numbers", 
+          "force_type": "int" 
+        }
+      ]
+    }
+  ]
+}
