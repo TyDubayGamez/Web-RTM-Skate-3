@@ -1,0 +1,44 @@
+{
+  "sections": [
+    {
+      "title": "Atmospheric Fog",
+      "controls": [
+        {
+          "type": "rgb_input",
+          "label": "Fog Color",
+          "address": "40E55210"
+        },
+        {
+          "type": "float_input",
+          "label": "Fog Distance",
+          "address": "40E55220",
+          "filter": "numbers",
+          "force_type": "float"
+        },
+        {
+          "type": "float_input",
+          "label": "Fog Density",
+          "address": "40E55224",
+          "filter": "numbers",
+          "force_type": "float"
+        }
+      ]
+    },
+    {
+      "title": "Fog Recovery",
+      "controls": [
+        {
+          "type": "multi_button",
+          "label": "Default Fog",
+          "button_text": "Reset Environment",
+          "writes": [
+            { 
+              "address": "40E55210", 
+              "value": "3D30B0A73E0C8C8C3E88888A3F8000003F80000042C800003F000000" 
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
