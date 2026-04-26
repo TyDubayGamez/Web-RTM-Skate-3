@@ -1,0 +1,38 @@
+{
+  "sections": [
+    {
+      "title": "Debug Cam and Spawn Toggle",
+      "controls": [
+        {
+          "label": "Enable",
+          "type": "multi_button",
+          "button_text": "Run Sequence",
+          "writes": [
+            {
+              "address": "47C98DD0",
+              "value": "02"
+            },
+            {
+              "address": "47C68157",
+              "value": "02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+        "title": "Revert to",
+        "controls": [
+          {
+            "label": "Reset Both to 00",
+            "type": "multi_button",
+            "button_text": "Reset Addresses",
+            "writes": [
+              { "address": "47C98DD0", "value": "00" },
+              { "address": "47C68157", "value": "00" }
+            ]
+          }
+        ]
+      }
+  ]
+}

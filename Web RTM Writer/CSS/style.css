@@ -1,0 +1,138 @@
+/* --- Base Theme & Reset --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #0f0f0f;
+    color: #e0e0e0;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h2, h3 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: #bb86fc; 
+    border-left: 4px solid #bb86fc;
+    padding-left: 15px;
+}
+
+/* --- Layout Containers --- */
+#file_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px; /* Limits the menu width */
+}
+
+.tool-card {
+    background: #1e1e1e;
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #333;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.tool-card:hover {
+    background: #2a2a2a;
+    border-color: #bb86fc;
+    box-shadow: 0 0 15px rgba(187, 134, 252, 0.3);
+    transform: translateY(-3px);
+}
+
+.section {
+    background: #181818;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border: 1px solid #222;
+    /* FIX: This keeps the whole tool content within the left 1/3 to 1/2 of a 1080p screen */
+    max-width: 800px; 
+}
+
+/* --- Controls & Inputs --- */
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #222;
+    gap: 40px; /* Space between label and inputs */
+}
+
+label {
+    font-weight: bold;
+    flex: 1; /* Label takes up available space */
+    min-width: 150px;
+}
+
+.input-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    /* Keeps the actual inputs and buttons grouped together */
+    justify-content: flex-end; 
+}
+
+input[type="text"], select {
+    background: #252525;
+    border: 1px solid #444;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    outline: none;
+    transition: border 0.3s;
+    width: 120px; /* Consistent width for float inputs */
+}
+
+button {
+    background: #bb86fc;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
+    white-space: nowrap; /* Prevents button text from wrapping */
+}
+
+button:hover {
+    background: #d7b7fd;
+}
+
+/* --- RGB Group Logic --- */
+.rgb-group {
+    display: flex;
+    gap: 8px;
+}
+
+.rgb-group input {
+    width: 65px;
+    text-align: center;
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 600px) {
+    .section {
+        max-width: 100%; /* Go full width on phones */
+    }
+
+    .control-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input[type="text"], .rgb-group input {
+        width: 100%;
+        height: 45px;
+    }
+}
