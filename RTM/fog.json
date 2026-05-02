@@ -10,14 +10,14 @@
         },
         {
           "type": "float_input",
-          "label": "Fog Distance",
+          "label": "Fog Density",
           "address": "40E55220",
           "filter": "numbers",
           "force_type": "float"
         },
         {
           "type": "float_input",
-          "label": "Fog Density",
+          "label": "Fog Distance",
           "address": "40E55224",
           "filter": "numbers",
           "force_type": "float"
