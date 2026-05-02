@@ -20,6 +20,8 @@ h2, h3 {
     color: #bb86fc; 
     border-left: 4px solid #bb86fc;
     padding-left: 15px;
+    /* FIX: Respects \n line breaks from your JSON title */
+    white-space: pre-line; 
 }
 
 /* --- Layout Containers --- */
@@ -27,7 +29,7 @@ h2, h3 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
-    max-width: 1200px; /* Limits the menu width */
+    max-width: 1200px;
 }
 
 .tool-card {
@@ -53,7 +55,6 @@ h2, h3 {
     border-radius: 10px;
     margin-bottom: 30px;
     border: 1px solid #222;
-    /* FIX: This keeps the whole tool content within the left 1/3 to 1/2 of a 1080p screen */
     max-width: 800px; 
 }
 
@@ -64,21 +65,13 @@ h2, h3 {
     align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #222;
-    gap: 40px; /* Space between label and inputs */
+    gap: 40px;
 }
 
 label {
     font-weight: bold;
-    flex: 1; /* Label takes up available space */
+    flex: 1;
     min-width: 150px;
-}
-
-.input-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    /* Keeps the actual inputs and buttons grouped together */
-    justify-content: flex-end; 
 }
 
 input[type="text"], select {
@@ -89,7 +82,14 @@ input[type="text"], select {
     border-radius: 4px;
     outline: none;
     transition: border 0.3s;
-    width: 120px; /* Consistent width for float inputs */
+    width: 150px; /* Widened slightly for text strings */
+    /* FIX: One-tap select to make copying symbols easier */
+    user-select: all;
+    -webkit-user-select: all;
+}
+
+input[type="text"]:focus {
+    border-color: #bb86fc;
 }
 
 button {
@@ -102,7 +102,7 @@ button {
     cursor: pointer;
     text-transform: uppercase;
     transition: 0.2s;
-    white-space: nowrap; /* Prevents button text from wrapping */
+    white-space: nowrap;
 }
 
 button:hover {
@@ -116,22 +116,23 @@ button:hover {
 }
 
 .rgb-group input {
-    width: 65px;
+    width: 70px;
     text-align: center;
 }
 
 /* --- MOBILE OPTIMIZATION --- */
 @media (max-width: 600px) {
     .section {
-        max-width: 100%; /* Go full width on phones */
+        max-width: 100%;
     }
 
     .control-row {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
 
-    input[type="text"], .rgb-group input {
+    input[type="text"], .rgb-group input, select {
         width: 100%;
         height: 45px;
     }
