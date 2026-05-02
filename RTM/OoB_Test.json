@@ -1,0 +1,31 @@
+{
+  "sections": [
+    {
+      "title": "Out of Bounds Testing",
+      "controls": [
+        {
+          "type": "multi_button",
+          "label": "God Mode",
+          "button_text": "Enable",
+          "writes": [
+            { 
+              "address": "YOUR_FOUND_ADDRESS", 
+              "value": "9090909090" 
+            }
+          ]
+        },
+        {
+          "type": "multi_button",
+          "label": "Restore Health Logic",
+          "button_text": "Disable",
+          "writes": [
+            { 
+              "address": "YOUR_FOUND_ADDRESS", 
+              "value": "C6441A4501" 
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
