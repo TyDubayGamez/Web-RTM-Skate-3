@@ -118,13 +118,25 @@ function renderToolUI(data, fileName) {
 // Pause execution helper
 const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
-// Sanitize user input
+// Sanitize user input (UPDATED: Allows negative signs)
 window.validateInput = (input, filter, force) => {
-    let patternStr = (filter === 'hex') ? "[0-9a-fA-F]*" : 
-                     (filter === 'letters') ? "[a-zA-Z]*" : 
-                     (filter === 'numbers') ? (force === 'int' ? "[0-9]*" : "[0-9.]*") : ".*";
+    let patternStr = "";
+    
+    if (filter === 'hex') {
+        patternStr = "[0-9a-fA-F]*";
+    } else if (filter === 'letters') {
+        patternStr = "[a-zA-Z]*";
+    } else if (filter === 'numbers') {
+        // Allows optional leading minus, followed by digits, and optional decimal for floats
+        patternStr = (force === 'int') ? "-?[0-9]*" : "-?[0-9.]*";
+    } else {
+        patternStr = ".*";
+    }
+
     const pattern = new RegExp(`^${patternStr}$`);
-    if (!pattern.test(input.value)) input.value = input.value.slice(0, -1);
+    if (!pattern.test(input.value)) {
+        input.value = input.value.slice(0, -1);
+    }
 };
 
 // Process write sequence
