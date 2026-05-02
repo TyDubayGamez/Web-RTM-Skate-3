@@ -33,7 +33,7 @@
           "writes": [
             { "address": "47C98DD0", "value": "00" },
             { "address": "47C68157", "value": "00" },
-            { "address": "47C98DD2", "value": "01" }
+            { "address": "47C98DD2", "value": "00" }
           ]
         }
       ]
