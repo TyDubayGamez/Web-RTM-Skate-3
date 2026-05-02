@@ -78,8 +78,15 @@ function renderToolUI(data, fileName) {
             const filter = ctrl.filter || '';
             const force = ctrl.force_type || '';
 
-            // Handle color inputs
-            if (ctrl.type === "rgb_input") {
+            // --- STRING INPUTS ---
+            if (ctrl.type === "string_input") {
+                row.innerHTML = `
+                    <label>${ctrl.label}</label>
+                    <input type="text" id="str_${ctrl.address}" maxlength="${ctrl.max_len}" placeholder="Text">
+                    <button onclick="handleString('${ctrl.address}')">Set</button>`;
+            } 
+            // --- RGB INPUTS ---
+            else if (ctrl.type === "rgb_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <div class="rgb-group">
@@ -89,20 +96,20 @@ function renderToolUI(data, fileName) {
                         <button onclick="handleRGBGroup('${ctrl.address}')">Set</button>
                     </div>`;
             } 
-            // Handle float values
+            // --- FLOAT INPUTS ---
             else if (ctrl.type === "float_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <input type="text" id="in_${ctrl.address}" placeholder="${force || 'Value'}" oninput="validateInput(this, '${filter}', '${force}')">
                     <button onclick="handleFloat('${ctrl.address}', ${ctrl.is_rgb})">Apply</button>`;
             }
-            // Handle multiple writes
+            // --- MULTI BUTTONS ---
             else if (ctrl.type === "multi_button") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <button onclick='window.handleMultiSet(${JSON.stringify(ctrl.writes)})'>${ctrl.button_text}</button>`;
             }
-            // Handle selection menus
+            // --- DROPDOWNS ---
             else if (ctrl.type === "dropdown") {
                 let opts = ctrl.options.map(o => `<option value="${o.value}">${o.name}</option>`).join('');
                 row.innerHTML = `<label>${ctrl.label}</label>
@@ -115,19 +122,33 @@ function renderToolUI(data, fileName) {
     });
 }
 
+// Convert text to hex (ASCII)
+function stringToHex(str) {
+    let hex = "";
+    for (let i = 0; i < str.length; i++) {
+        hex += str.charCodeAt(i).toString(16).padStart(2, '0');
+    }
+    return hex + "00"; // Always add null terminator
+}
+
+// Write string data
+window.handleString = (addr) => {
+    const val = document.getElementById(`str_${addr}`).value;
+    const hex = stringToHex(val);
+    sendRequest(addr, hex);
+};
+
 // Pause execution helper
 const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
-// Sanitize user input (UPDATED: Allows negative signs)
+// Sanitize user input
 window.validateInput = (input, filter, force) => {
     let patternStr = "";
-    
     if (filter === 'hex') {
         patternStr = "[0-9a-fA-F]*";
     } else if (filter === 'letters') {
         patternStr = "[a-zA-Z]*";
     } else if (filter === 'numbers') {
-        // Allows optional leading minus, followed by digits, and optional decimal for floats
         patternStr = (force === 'int') ? "-?[0-9]*" : "-?[0-9.]*";
     } else {
         patternStr = ".*";
@@ -147,7 +168,7 @@ window.handleMultiSet = async (writes) => {
     }
 };
 
-// Convert decimal hex
+// Convert decimal to hex
 function floatToHex(value) {
     const view = new DataView(new ArrayBuffer(4));
     view.setFloat32(0, parseFloat(value) || 0, false);
