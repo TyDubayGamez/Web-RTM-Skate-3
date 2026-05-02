@@ -78,14 +78,14 @@ function renderToolUI(data, fileName) {
             const filter = ctrl.filter || '';
             const force = ctrl.force_type || '';
 
-            // --- STRING INPUTS ---
+            // Handle text strings
             if (ctrl.type === "string_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
-                    <input type="text" id="str_${ctrl.address}" maxlength="${ctrl.max_len}" placeholder="Text">
-                    <button onclick="handleString('${ctrl.address}')">Set</button>`;
-            } 
-            // --- RGB INPUTS ---
+                    <input type="text" id="str_${ctrl.address}" maxlength="${ctrl.max_len || 16}" placeholder="Text">
+                    <button onclick="handleString('${ctrl.address}', ${ctrl.max_len || 16})">Set</button>`;
+            }
+            // Handle color inputs
             else if (ctrl.type === "rgb_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
@@ -96,22 +96,22 @@ function renderToolUI(data, fileName) {
                         <button onclick="handleRGBGroup('${ctrl.address}')">Set</button>
                     </div>`;
             } 
-            // --- FLOAT INPUTS ---
+            // Handle float values
             else if (ctrl.type === "float_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <input type="text" id="in_${ctrl.address}" placeholder="${force || 'Value'}" oninput="validateInput(this, '${filter}', '${force}')">
                     <button onclick="handleFloat('${ctrl.address}', ${ctrl.is_rgb})">Apply</button>`;
             }
-            // --- MULTI BUTTONS ---
+            // Handle multiple writes
             else if (ctrl.type === "multi_button") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <button onclick='window.handleMultiSet(${JSON.stringify(ctrl.writes)})'>${ctrl.button_text}</button>`;
             }
-            // --- DROPDOWNS ---
+            // Handle selection menus
             else if (ctrl.type === "dropdown") {
-                let opts = ctrl.options.map(o => `<option value="${o.value}">${o.name}</option>`).join('');
+                let opts = ctrl.options.map(o => `<option value="${o.value}">${o.value}</option>`).join('');
                 row.innerHTML = `<label>${ctrl.label}</label>
                                  <select id="sel_${ctrl.address}">${opts}</select>
                                  <button onclick="handleDropdown('${ctrl.address}')">Set</button>`;
@@ -122,19 +122,20 @@ function renderToolUI(data, fileName) {
     });
 }
 
-// Convert text to hex (ASCII)
-function stringToHex(str) {
+// Convert text hex
+function stringToHex(str, maxLen) {
     let hex = "";
-    for (let i = 0; i < str.length; i++) {
-        hex += str.charCodeAt(i).toString(16).padStart(2, '0');
+    let cleanStr = str.substring(0, maxLen);
+    for (let i = 0; i < cleanStr.length; i++) {
+        hex += cleanStr.charCodeAt(i).toString(16).padStart(2, '0');
     }
-    return hex + "00"; // Always add null terminator
+    return hex + "00"; 
 }
 
 // Write string data
-window.handleString = (addr) => {
+window.handleString = (addr, maxLen) => {
     const val = document.getElementById(`str_${addr}`).value;
-    const hex = stringToHex(val);
+    const hex = stringToHex(val, maxLen);
     sendRequest(addr, hex);
 };
 
@@ -153,11 +154,8 @@ window.validateInput = (input, filter, force) => {
     } else {
         patternStr = ".*";
     }
-
     const pattern = new RegExp(`^${patternStr}$`);
-    if (!pattern.test(input.value)) {
-        input.value = input.value.slice(0, -1);
-    }
+    if (!pattern.test(input.value)) input.value = input.value.slice(0, -1);
 };
 
 // Process write sequence
@@ -168,7 +166,7 @@ window.handleMultiSet = async (writes) => {
     }
 };
 
-// Convert decimal to hex
+// Convert decimal hex
 function floatToHex(value) {
     const view = new DataView(new ArrayBuffer(4));
     view.setFloat32(0, parseFloat(value) || 0, false);
