@@ -1,0 +1,15 @@
+{
+  "sections": [
+    {
+      "title": "Player and Team Names\n(«: skate.  »: bolt)",
+      "controls": [
+        { "type": "string_input", "label": "Player 1 Name", "address": "30074650", "max_len": 6 },
+        { "type": "string_input", "label": "Player 2 Name", "address": "300DC031", "max_len": 8 },
+        { "type": "string_input", "label": "Player 3 Name", "address": "300DC05D", "max_len": 8 },
+        { "type": "string_input", "label": "Player 4 Name", "address": "300DC089", "max_len": 8 },
+        { "type": "string_input", "label": "Player 5 Name", "address": "300DC0B5", "max_len": 8 },
+        { "type": "string_input", "label": "Team Name", "address": "300DC3AC", "max_len": 16 }
+      ]
+    }
+  ]
+}
