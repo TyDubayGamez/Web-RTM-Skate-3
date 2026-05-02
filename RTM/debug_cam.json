@@ -4,22 +4,21 @@
       "title": "Debug Cam and Spawn Toggle",
       "controls": [
         {
-          "label": "Enable",
+          "label": "Enable Debug Spawn",
           "type": "multi_button",
           "button_text": "Run Sequence",
           "writes": [
-            {
-              "address": "47C98DD0",
-              "value": "02"
-            },
-            {
-              "address": "47C68157",
-              "value": "02"
-            },
-            {
-              "address": "47C98DD2",
-              "value": "00"
-            }
+            { "address": "47C98DD0", "value": "02" },
+            { "address": "47C68157", "value": "02" }
+          ]
+        },
+        {
+          "label": "Enable Animation Cam",
+          "type": "multi_button",
+          "button_text": "Enable Cam",
+          "writes": [
+            { "address": "47C98DD0", "value": "02" },
+            { "address": "47C98DD2", "value": "00" }
           ]
         }
       ]
