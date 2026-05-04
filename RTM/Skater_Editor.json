@@ -21,20 +21,124 @@
     {
       "title": "Style Settings & Gestures",
       "controls": [
-        { "type": "float_input", "label": "Stance", "address": "018E0810", "force_type": "int", "max_len": 4 },
-        { "type": "float_input", "label": "Style", "address": "018E0814", "force_type": "int", "max_len": 4 },
-        { "type": "float_input", "label": "Posture", "address": "018E0818", "force_type": "int", "max_len": 4 },
-        { "type": "float_input", "label": "Gesture 1", "address": "463EF15C", "force_type": "int", "max_len": 4 },
-        { "type": "float_input", "label": "Gesture 2", "address": "463EF168", "force_type": "int", "max_len": 4 },
-        { "type": "float_input", "label": "Gesture 3", "address": "463EF164", "force_type": "int", "max_len": 4 },
-        { "type": "float_input", "label": "Gesture 4", "address": "463EF160", "force_type": "int", "max_len": 4 }
+        {
+          "type": "dropdown",
+          "label": "Stance",
+          "address": "018E0813",
+          "options": [
+            { "name": "Goofy", "value": "00" },
+            { "name": "Regular", "value": "01" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "label": "Style",
+          "address": "018E0817",
+          "options": [
+            { "name": "Standard", "value": "00" },
+            { "name": "Loose", "value": "01" },
+            { "name": "OG", "value": "02" },
+            { "name": "Aggressive", "value": "03" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "label": "Posture",
+          "address": "018E081B",
+          "options": [
+            { "name": "Default", "value": "00" },
+            { "name": "Straight", "value": "01" },
+            { "name": "Hunched", "value": "02" },
+            { "name": "Macho", "value": "03" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "label": "Gesture 1",
+          "address": "463EF15F",
+          "options": [
+            { "name": "Invalid", "value": "25" }, { "name": "Air Guitar", "value": "00" }, { "name": "Airplane", "value": "01" },
+            { "name": "Boxing", "value": "02" }, { "name": "Bruce", "value": "03" }, { "name": "Got the Time", "value": "04" },
+            { "name": "Horns", "value": "05" }, { "name": "Double Guns", "value": "06" }, { "name": "Dunno", "value": "07" },
+            { "name": "Finger Wag", "value": "08" }, { "name": "Fists", "value": "09" }, { "name": "Flex", "value": "0A" },
+            { "name": "Flip Table", "value": "0B" }, { "name": "Aaayyy!", "value": "0C" }, { "name": "Freedom", "value": "0D" },
+            { "name": "Why I Oughta", "value": "0E" }, { "name": "Get Away!", "value": "0F" }, { "name": "Get Outta Here", "value": "10" },
+            { "name": "Handcuffs", "value": "11" }, { "name": "High Pump", "value": "12" }, { "name": "Low Pump", "value": "13" },
+            { "name": "Prewind", "value": "14" }, { "name": "Peace", "value": "15" }, { "name": "Fingerpoint", "value": "16" },
+            { "name": "Raise the Roof", "value": "17" }, { "name": "Shaka", "value": "18" }, { "name": "Shrug", "value": "19" },
+            { "name": "Sky", "value": "1A" }, { "name": "Snap!", "value": "1B" }, { "name": "Soul Arch", "value": "1C" },
+            { "name": "Nerd Alert", "value": "1D" }, { "name": "Surf's Up", "value": "1E" }, { "name": "Swing High", "value": "1F" },
+            { "name": "Swing Low", "value": "20" }, { "name": "Throw Arms", "value": "21" }, { "name": "Thumbs Down", "value": "22" },
+            { "name": "Wings", "value": "23" }, { "name": "Yard Sale", "value": "24" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "label": "Gesture 2",
+          "address": "463EF16B",
+          "options": [
+            { "name": "Invalid", "value": "25" }, { "name": "Air Guitar", "value": "00" }, { "name": "Airplane", "value": "01" },
+            { "name": "Boxing", "value": "02" }, { "name": "Bruce", "value": "03" }, { "name": "Got the Time", "value": "04" },
+            { "name": "Horns", "value": "05" }, { "name": "Double Guns", "value": "06" }, { "name": "Dunno", "value": "07" },
+            { "name": "Finger Wag", "value": "08" }, { "name": "Fists", "value": "09" }, { "name": "Flex", "value": "0A" },
+            { "name": "Flip Table", "value": "0B" }, { "name": "Aaayyy!", "value": "0C" }, { "name": "Freedom", "value": "0D" },
+            { "name": "Why I Oughta", "value": "0E" }, { "name": "Get Away!", "value": "0F" }, { "name": "Get Outta Here", "value": "10" },
+            { "name": "Handcuffs", "value": "11" }, { "name": "High Pump", "value": "12" }, { "name": "Low Pump", "value": "13" },
+            { "name": "Prewind", "value": "14" }, { "name": "Peace", "value": "15" }, { "name": "Fingerpoint", "value": "16" },
+            { "name": "Raise the Roof", "value": "17" }, { "name": "Shaka", "value": "18" }, { "name": "Shrug", "value": "19" },
+            { "name": "Sky", "value": "1A" }, { "name": "Snap!", "value": "1B" }, { "name": "Soul Arch", "value": "1C" },
+            { "name": "Nerd Alert", "value": "1D" }, { "name": "Surf's Up", "value": "1E" }, { "name": "Swing High", "value": "1F" },
+            { "name": "Swing Low", "value": "20" }, { "name": "Throw Arms", "value": "21" }, { "name": "Thumbs Down", "value": "22" },
+            { "name": "Wings", "value": "23" }, { "name": "Yard Sale", "value": "24" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "label": "Gesture 3",
+          "address": "463EF167",
+          "options": [
+            { "name": "Invalid", "value": "25" }, { "name": "Air Guitar", "value": "00" }, { "name": "Airplane", "value": "01" },
+            { "name": "Boxing", "value": "02" }, { "name": "Bruce", "value": "03" }, { "name": "Got the Time", "value": "04" },
+            { "name": "Horns", "value": "05" }, { "name": "Double Guns", "value": "06" }, { "name": "Dunno", "value": "07" },
+            { "name": "Finger Wag", "value": "08" }, { "name": "Fists", "value": "09" }, { "name": "Flex", "value": "0A" },
+            { "name": "Flip Table", "value": "0B" }, { "name": "Aaayyy!", "value": "0C" }, { "name": "Freedom", "value": "0D" },
+            { "name": "Why I Oughta", "value": "0E" }, { "name": "Get Away!", "value": "0F" }, { "name": "Get Outta Here", "value": "10" },
+            { "name": "Handcuffs", "value": "11" }, { "name": "High Pump", "value": "12" }, { "name": "Low Pump", "value": "13" },
+            { "name": "Prewind", "value": "14" }, { "name": "Peace", "value": "15" }, { "name": "Fingerpoint", "value": "16" },
+            { "name": "Raise the Roof", "value": "17" }, { "name": "Shaka", "value": "18" }, { "name": "Shrug", "value": "19" },
+            { "name": "Sky", "value": "1A" }, { "name": "Snap!", "value": "1B" }, { "name": "Soul Arch", "value": "1C" },
+            { "name": "Nerd Alert", "value": "1D" }, { "name": "Surf's Up", "value": "1E" }, { "name": "Swing High", "value": "1F" },
+            { "name": "Swing Low", "value": "20" }, { "name": "Throw Arms", "value": "21" }, { "name": "Thumbs Down", "value": "22" },
+            { "name": "Wings", "value": "23" }, { "name": "Yard Sale", "value": "24" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "label": "Gesture 4",
+          "address": "463EF163",
+          "options": [
+            { "name": "Invalid", "value": "25" }, { "name": "Air Guitar", "value": "00" }, { "name": "Airplane", "value": "01" },
+            { "name": "Boxing", "value": "02" }, { "name": "Bruce", "value": "03" }, { "name": "Got the Time", "value": "04" },
+            { "name": "Horns", "value": "05" }, { "name": "Double Guns", "value": "06" }, { "name": "Dunno", "value": "07" },
+            { "name": "Finger Wag", "value": "08" }, { "name": "Fists", "value": "09" }, { "name": "Flex", "value": "0A" },
+            { "name": "Flip Table", "value": "0B" }, { "name": "Aaayyy!", "value": "0C" }, { "name": "Freedom", "value": "0D" },
+            { "name": "Why I Oughta", "value": "0E" }, { "name": "Get Away!", "value": "0F" }, { "name": "Get Outta Here", "value": "10" },
+            { "name": "Handcuffs", "value": "11" }, { "name": "High Pump", "value": "12" }, { "name": "Low Pump", "value": "13" },
+            { "name": "Prewind", "value": "14" }, { "name": "Peace", "value": "15" }, { "name": "Fingerpoint", "value": "16" },
+            { "name": "Raise the Roof", "value": "17" }, { "name": "Shaka", "value": "18" }, { "name": "Shrug", "value": "19" },
+            { "name": "Sky", "value": "1A" }, { "name": "Snap!", "value": "1B" }, { "name": "Soul Arch", "value": "1C" },
+            { "name": "Nerd Alert", "value": "1D" }, { "name": "Surf's Up", "value": "1E" }, { "name": "Swing High", "value": "1F" },
+            { "name": "Swing Low", "value": "20" }, { "name": "Throw Arms", "value": "21" }, { "name": "Thumbs Down", "value": "22" },
+            { "name": "Wings", "value": "23" }, { "name": "Yard Sale", "value": "24" }
+          ]
+        }
       ]
     },
     {
       "title": "Board Mods",
       "controls": [
         { "type": "float_input", "label": "Truck Tightness", "address": "018E0804" },
-        { "type": "float_input", "label": "Wheels Hardness", "address": "018E0804" }
+        { "type": "float_input", "label": "Wheels Hardness", "address": "018E0808" }
       ]
     },
     {
@@ -47,7 +151,7 @@
         { "type": "float_input", "label": "Nose Height", "address": "30060090" },
         { "type": "float_input", "label": "Nose Curve", "address": "30060084" },
         { "type": "float_input", "label": "Eye Width", "address": "30060030" },
-        { "type": "float_input", "label": "Eye Height", "address": "300600A4" },
+        { "type": "float_input", "label": "Eye Height", "address": "300600B4" },
         { "type": "float_input", "label": "Brow Height", "address": "3006007C" },
         { "type": "float_input", "label": "Brow Rotation", "address": "30060078" },
         { "type": "float_input", "label": "Brow Profile", "address": "30060080" },
