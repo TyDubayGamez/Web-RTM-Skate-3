@@ -21,13 +21,13 @@
     {
       "title": "Style Settings & Gestures",
       "controls": [
-        { "type": "float_input", "label": "Stance", "address": "018E0813", "force_type": "int" },
-        { "type": "float_input", "label": "Style", "address": "018E0817", "force_type": "int" },
-        { "type": "float_input", "label": "Posture", "address": "018E081A", "force_type": "int" },
-        { "type": "float_input", "label": "Gesture 1", "address": "463EF15F", "force_type": "int", "max_len": 2 },
-        { "type": "float_input", "label": "Gesture 2", "address": "463EF16B", "force_type": "int", "max_len": 2 },
-        { "type": "float_input", "label": "Gesture 3", "address": "463EF167", "force_type": "int", "max_len": 2 },
-        { "type": "float_input", "label": "Gesture 4", "address": "463EF163", "force_type": "int", "max_len": 2 }
+        { "type": "float_input", "label": "Stance", "address": "018E0810", "force_type": "int", "max_len": 4 },
+        { "type": "float_input", "label": "Style", "address": "018E0814", "force_type": "int", "max_len": 4 },
+        { "type": "float_input", "label": "Posture", "address": "018E0818", "force_type": "int", "max_len": 4 },
+        { "type": "float_input", "label": "Gesture 1", "address": "463EF15C", "force_type": "int", "max_len": 4 },
+        { "type": "float_input", "label": "Gesture 2", "address": "463EF168", "force_type": "int", "max_len": 4 },
+        { "type": "float_input", "label": "Gesture 3", "address": "463EF164", "force_type": "int", "max_len": 4 },
+        { "type": "float_input", "label": "Gesture 4", "address": "463EF160", "force_type": "int", "max_len": 4 }
       ]
     },
     {
