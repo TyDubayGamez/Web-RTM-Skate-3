@@ -1,0 +1,64 @@
+{
+  "sections": [
+    {
+      "title": "Character Clothing RGB",
+      "controls": [
+        { "type": "rgb_input", "label": "Hat Color", "address": "30070030" },
+        { "type": "rgb_input", "label": "Shirt Color", "address": "30070270" },
+        { "type": "rgb_input", "label": "Pants Color", "address": "30070330" },
+        { "type": "rgb_input", "label": "Socks Color", "address": "300702B0" }
+      ]
+    },
+    {
+      "title": "Body & Hair RGB",
+      "controls": [
+        { "type": "rgb_input", "label": "Head/Skin Tone", "address": "300700B0" },
+        { "type": "rgb_input", "label": "Arms Tone", "address": "300700F0" },
+        { "type": "rgb_input", "label": "Legs Tone", "address": "30070130" },
+        { "type": "rgb_input", "label": "Hair Color", "address": "30070070" }
+      ]
+    },
+    {
+      "title": "Style Settings & Gestures",
+      "controls": [
+        { "type": "float_input", "label": "Stance", "address": "018E0813", "force_type": "int" },
+        { "type": "float_input", "label": "Style", "address": "018E0817", "force_type": "int" },
+        { "type": "float_input", "label": "Posture", "address": "018E081A", "force_type": "int" },
+        { "type": "float_input", "label": "Gesture 1", "address": "463EF15F", "force_type": "int", "max_len": 2 },
+        { "type": "float_input", "label": "Gesture 2", "address": "463EF16B", "force_type": "int", "max_len": 2 },
+        { "type": "float_input", "label": "Gesture 3", "address": "463EF167", "force_type": "int", "max_len": 2 },
+        { "type": "float_input", "label": "Gesture 4", "address": "463EF163", "force_type": "int", "max_len": 2 }
+      ]
+    },
+    {
+      "title": "Board Mods",
+      "controls": [
+        { "type": "float_input", "label": "Truck Tightness", "address": "018E0804" },
+        { "type": "float_input", "label": "Wheels Hardness", "address": "018E0804" }
+      ]
+    },
+    {
+      "title": "Body Morphs",
+      "controls": [
+        { "type": "float_input", "label": "Fatness", "address": "30060070" },
+        { "type": "float_input", "label": "Skinniness", "address": "30060074" },
+        { "type": "float_input", "label": "Nose Length", "address": "3006008C" },
+        { "type": "float_input", "label": "Nose Width", "address": "30060088" },
+        { "type": "float_input", "label": "Nose Height", "address": "30060090" },
+        { "type": "float_input", "label": "Nose Curve", "address": "30060084" },
+        { "type": "float_input", "label": "Eye Width", "address": "30060030" },
+        { "type": "float_input", "label": "Eye Height", "address": "300600A4" },
+        { "type": "float_input", "label": "Brow Height", "address": "3006007C" },
+        { "type": "float_input", "label": "Brow Rotation", "address": "30060078" },
+        { "type": "float_input", "label": "Brow Profile", "address": "30060080" },
+        { "type": "float_input", "label": "Mouth Width", "address": "30060094" },
+        { "type": "float_input", "label": "Mouth Smile", "address": "30060098" },
+        { "type": "float_input", "label": "Mouth Fullness", "address": "3006009C" },
+        { "type": "float_input", "label": "Mouth Height", "address": "300600A0" },
+        { "type": "float_input", "label": "Chin Length", "address": "300600A4" },
+        { "type": "float_input", "label": "Jaw Definition", "address": "300600A8" },
+        { "type": "float_input", "label": "Jaw Roundness", "address": "300600AC" }
+      ]
+    }
+  ]
+}
