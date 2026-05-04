@@ -77,6 +77,7 @@ function renderToolUI(data, fileName) {
             
             const filter = ctrl.filter || '';
             const force = ctrl.force_type || '';
+            const mLen = ctrl.max_len || 4;
 
             // Handle text strings
             if (ctrl.type === "string_input") {
@@ -96,12 +97,12 @@ function renderToolUI(data, fileName) {
                         <button onclick="handleRGBGroup('${ctrl.address}')">Set</button>
                     </div>`;
             } 
-            // Handle float values
+            // Handle values (Floats or Ints)
             else if (ctrl.type === "float_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <input type="text" id="in_${ctrl.address}" placeholder="${force || 'Value'}" oninput="validateInput(this, '${filter}', '${force}')">
-                    <button onclick="handleFloat('${ctrl.address}', ${ctrl.is_rgb})">Apply</button>`;
+                    <button onclick="handleFloat('${ctrl.address}', ${ctrl.is_rgb || false}, '${force}', ${mLen})">Apply</button>`;
             }
             // Handle multiple writes
             else if (ctrl.type === "multi_button") {
@@ -122,7 +123,7 @@ function renderToolUI(data, fileName) {
     });
 }
 
-// Convert text hex
+// Convert text to hex
 function stringToHex(str, maxLen) {
     let hex = "";
     let cleanStr = str.substring(0, maxLen);
@@ -166,16 +167,33 @@ window.handleMultiSet = async (writes) => {
     }
 };
 
-// Convert decimal hex
+// Convert float to Big Endian Hex
 function floatToHex(value) {
     const view = new DataView(new ArrayBuffer(4));
     view.setFloat32(0, parseFloat(value) || 0, false);
     return Array.from(new Uint8Array(view.buffer)).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
 }
 
-// Write float data
-window.handleFloat = (addr, isRGB) => {
-    let hex = floatToHex(document.getElementById(`in_${addr}`).value);
+// Write float or Int data
+window.handleFloat = (addr, isRGB, force, maxLen) => {
+    const inputVal = document.getElementById(`in_${addr}`).value;
+    let hex = "";
+
+    if (force === "int") {
+        // Convert to Big Endian Integer Hex based on maxLen
+        let intVal = parseInt(inputVal) || 0;
+        hex = (intVal >>> 0).toString(16).toUpperCase();
+        
+        const targetChars = maxLen * 2;
+        if (hex.length > targetChars) {
+            hex = hex.slice(-targetChars);
+        } else {
+            hex = hex.padStart(targetChars, '0');
+        }
+    } else {
+        hex = floatToHex(inputVal);
+    }
+
     if (isRGB) hex = hex + hex + hex; 
     sendRequest(addr, hex);
 };
