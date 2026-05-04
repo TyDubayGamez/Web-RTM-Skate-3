@@ -1,0 +1,29 @@
+{
+  "sections": [
+    {
+      "title": "World Settings",
+      "controls": [
+        {
+          "type": "dropdown",
+          "label": "Time of Day",
+          "address": "0x018E0810",
+          "options": [
+            { "name": "Day", "value": "3F800000" },
+            { "name": "Sunset", "value": "3F000000" },
+            { "name": "Night", "value": "BF800000" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "label": "Gravity Mode",
+          "address": "0x00A12344",
+          "options": [
+            { "name": "Normal", "value": "41100000" },
+            { "name": "Low Gravity", "value": "40800000" },
+            { "name": "Super Jump", "value": "41C80000" }
+          ]
+        }
+      ]
+    }
+  ]
+}
