@@ -8,9 +8,11 @@ window.onload = async () => {
 function setupIP() {
     const ipInput = document.getElementById('ps3_ip');
     if (!ipInput) return;
+
     if (localStorage.getItem('ps3_ip')) {
         ipInput.value = localStorage.getItem('ps3_ip');
     }
+
     ipInput.onchange = () => localStorage.setItem('ps3_ip', ipInput.value);
 }
 
@@ -86,6 +88,7 @@ function renderToolUI(data, fileName) {
                     <input type="text" id="str_${ctrl.address}" maxlength="${ctrl.max_len || 16}" placeholder="Text">
                     <button onclick="handleString('${ctrl.address}', ${ctrl.max_len || 16})">Set</button>`;
             }
+
             // Handle color inputs
             else if (ctrl.type === "rgb_input") {
                 row.innerHTML = `
@@ -97,6 +100,7 @@ function renderToolUI(data, fileName) {
                         <button onclick="handleRGBGroup('${ctrl.address}')">Set</button>
                     </div>`;
             } 
+
             // Handle values (Floats or Ints)
             else if (ctrl.type === "float_input") {
                 row.innerHTML = `
@@ -104,21 +108,29 @@ function renderToolUI(data, fileName) {
                     <input type="text" id="in_${ctrl.address}" placeholder="${force || 'Value'}" oninput="validateInput(this, '${filter}', '${force}')">
                     <button onclick="handleFloat('${ctrl.address}', ${ctrl.is_rgb || false}, '${force}', ${mLen})">Apply</button>`;
             }
+
             // Handle multiple writes
             else if (ctrl.type === "multi_button") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <button onclick='window.handleMultiSet(${JSON.stringify(ctrl.writes)})'>${ctrl.button_text}</button>`;
             }
-            // Handle selection menus
+
+            // ✅ FIXED DROPDOWN (shows name instead of hex)
             else if (ctrl.type === "dropdown") {
-                let opts = ctrl.options.map(o => `<option value="${o.value}">${o.value}</option>`).join('');
-                row.innerHTML = `<label>${ctrl.label}</label>
-                                 <select id="sel_${ctrl.address}">${opts}</select>
-                                 <button onclick="handleDropdown('${ctrl.address}')">Set</button>`;
+                let opts = ctrl.options.map(o => 
+                    `<option value="${o.value}">${o.name || o.value}</option>`
+                ).join('');
+
+                row.innerHTML = `
+                    <label>${ctrl.label}</label>
+                    <select id="sel_${ctrl.address}">${opts}</select>
+                    <button onclick="handleDropdown('${ctrl.address}')">Set</button>`;
             }
+
             secDiv.appendChild(row);
         });
+
         container.appendChild(secDiv);
     });
 }
@@ -146,6 +158,7 @@ const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 // Sanitize user input
 window.validateInput = (input, filter, force) => {
     let patternStr = "";
+
     if (filter === 'hex') {
         patternStr = "[0-9a-fA-F]*";
     } else if (filter === 'letters') {
@@ -155,6 +168,7 @@ window.validateInput = (input, filter, force) => {
     } else {
         patternStr = ".*";
     }
+
     const pattern = new RegExp(`^${patternStr}$`);
     if (!pattern.test(input.value)) input.value = input.value.slice(0, -1);
 };
@@ -180,11 +194,11 @@ window.handleFloat = (addr, isRGB, force, maxLen) => {
     let hex = "";
 
     if (force === "int") {
-        // Convert to Big Endian Integer Hex based on maxLen
         let intVal = parseInt(inputVal) || 0;
         hex = (intVal >>> 0).toString(16).toUpperCase();
         
         const targetChars = maxLen * 2;
+
         if (hex.length > targetChars) {
             hex = hex.slice(-targetChars);
         } else {
@@ -207,7 +221,8 @@ window.handleRGBGroup = (addr) => {
 };
 
 // Write dropdown selection
-window.handleDropdown = (addr) => sendRequest(addr, document.getElementById(`sel_${addr}`).value);
+window.handleDropdown = (addr) => 
+    sendRequest(addr, document.getElementById(`sel_${addr}`).value);
 
 // Send MAPI request
 function sendRequest(addr, val) {
