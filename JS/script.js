@@ -76,22 +76,25 @@ function renderToolUI(data, fileName) {
         section.controls.forEach(ctrl => {
             const row = document.createElement('div');
             row.className = "control-row";
-            
-            const filter = ctrl.filter || '';
-            const force = ctrl.force_type || '';
-            const mLen = ctrl.max_len || 4;
+
             const readLen = ctrl.read_length || 4;
 
-            // STRING
-            if (ctrl.type === "string_input") {
+            // GRAPHICS TYPE ✅
+            if (ctrl.type === "graphics") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
-                    <input type="text" id="str_${ctrl.address}" maxlength="${ctrl.max_len || 16}">
-                    <button onclick="handleString('${ctrl.address}', ${ctrl.max_len || 16})">Set</button>
-                    <button onclick="handleRead('${ctrl.address}', ${readLen}, 'string')">Read</button>`;
+                    <div class="rgb-group">
+                        <input type="text" id="rot_${ctrl.address}" placeholder="Rotation">
+                        <input type="text" id="scale_${ctrl.address}" placeholder="Scale">
+                        <input type="text" id="x_${ctrl.address}" placeholder="X">
+                        <input type="text" id="y_${ctrl.address}" placeholder="Y">
+                        <button onclick="handleGraphics('${ctrl.address}')">Set</button>
+                        <button onclick="handleReadGraphics('${ctrl.address}')">Read</button>
+                    </div>`;
             }
 
-            // RGB
+            // KEEP YOUR EXISTING TYPES BELOW (unchanged)
+
             else if (ctrl.type === "rgb_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
@@ -102,18 +105,16 @@ function renderToolUI(data, fileName) {
                         <button onclick="handleRGBGroup('${ctrl.address}')">Set</button>
                         <button onclick="handleRead('${ctrl.address}', ${readLen}, 'rgb')">Read</button>
                     </div>`;
-            } 
+            }
 
-            // FLOAT / INT
             else if (ctrl.type === "float_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
                     <input type="text" id="in_${ctrl.address}">
-                    <button onclick="handleFloat('${ctrl.address}', ${ctrl.is_rgb || false}, '${force}', ${mLen})">Apply</button>
+                    <button onclick="handleFloat('${ctrl.address}')">Apply</button>
                     <button onclick="handleRead('${ctrl.address}', ${readLen}, 'float')">Read</button>`;
             }
 
-            // DROPDOWN
             else if (ctrl.type === "dropdown") {
                 let opts = ctrl.options.map(o => 
                     `<option value="${o.value}">${o.name || o.value}</option>`
@@ -134,122 +135,70 @@ function renderToolUI(data, fileName) {
 }
 
 // =======================
-// ✅ NEW: READ MEMORY
+// GRAPHICS WRITE
 // =======================
+window.handleGraphics = (baseAddr) => {
+    const rot = floatToHex(document.getElementById(`rot_${baseAddr}`).value);
+    const scale = floatToHex(document.getElementById(`scale_${baseAddr}`).value);
+    const x = floatToHex(document.getElementById(`x_${baseAddr}`).value);
+    const y = floatToHex(document.getElementById(`y_${baseAddr}`).value);
 
-async function getMemory(addr, length) {
+    sendRequest(baseAddr, rot);
+    sendRequest(addOffset(baseAddr, 4), scale);
+    sendRequest(addOffset(baseAddr, 8), x);
+    sendRequest(addOffset(baseAddr, 12), y);
+};
+
+// =======================
+// GRAPHICS READ
+// =======================
+window.handleReadGraphics = async (baseAddr) => {
+    const rot = await readFloat(baseAddr);
+    const scale = await readFloat(addOffset(baseAddr, 4));
+    const x = await readFloat(addOffset(baseAddr, 8));
+    const y = await readFloat(addOffset(baseAddr, 12));
+
+    document.getElementById(`rot_${baseAddr}`).value = rot;
+    document.getElementById(`scale_${baseAddr}`).value = scale;
+    document.getElementById(`x_${baseAddr}`).value = x;
+    document.getElementById(`y_${baseAddr}`).value = y;
+};
+
+// =======================
+// HELPERS
+// =======================
+function addOffset(addr, offset) {
+    return (parseInt(addr, 16) + offset).toString(16).toUpperCase();
+}
+
+async function readFloat(addr) {
     const ip = document.getElementById('ps3_ip').value;
-    if (!ip) return null;
-
     try {
-        const res = await fetch(`http://${ip}/getmem.ps3mapi?proc=0&addr=${addr}&length=${length}`);
-        const text = await res.text();
-        return text.trim();
-    } catch {
-        alert("Read failed (CORS likely blocked)");
-        return null;
-    }
-}
+        const res = await fetch(`http://${ip}/getmem.ps3mapi?proc=0&addr=${addr}&length=4`);
+        const hex = await res.text();
 
-window.handleRead = async (addr, length, type, targetId = null) => {
-    const hex = await getMemory(addr, length);
-    if (!hex) return;
-
-    // FLOAT
-    if (type === "float") {
         const bytes = hex.match(/.{1,2}/g).map(b => parseInt(b, 16));
-        const view = new DataView(new Uint8Array(bytes).buffer);
-        const val = view.getFloat32(0, false);
-        document.getElementById(`in_${addr}`).value = val;
+        return new DataView(new Uint8Array(bytes).buffer).getFloat32(0, false);
+    } catch {
+        return 0;
     }
-
-    // RGB
-    else if (type === "rgb") {
-        const parts = hex.match(/.{8}/g);
-        if (!parts) return;
-
-        const toFloat = (h) => {
-            const bytes = h.match(/.{2}/g).map(b => parseInt(b, 16));
-            return new DataView(new Uint8Array(bytes).buffer).getFloat32(0, false);
-        };
-
-        document.getElementById(`r_${addr}`).value = toFloat(parts[0]);
-        document.getElementById(`g_${addr}`).value = toFloat(parts[1]);
-        document.getElementById(`b_${addr}`).value = toFloat(parts[2]);
-    }
-
-    // DROPDOWN / HEX
-    else if (type === "hex" && targetId) {
-        document.getElementById(targetId).value = hex.slice(-2);
-    }
-
-    // STRING (basic)
-    else if (type === "string") {
-        let str = "";
-        for (let i = 0; i < hex.length; i += 2) {
-            const char = parseInt(hex.substr(i, 2), 16);
-            if (char === 0) break;
-            str += String.fromCharCode(char);
-        }
-        document.getElementById(`str_${addr}`).value = str;
-    }
-};
-
-// =======================
-// EXISTING FUNCTIONS (UNCHANGED)
-// =======================
-
-function stringToHex(str, maxLen) {
-    let hex = "";
-    let cleanStr = str.substring(0, maxLen);
-    for (let i = 0; i < cleanStr.length; i++) {
-        hex += cleanStr.charCodeAt(i).toString(16).padStart(2, '0');
-    }
-    return hex + "00"; 
 }
-
-window.handleString = (addr, maxLen) => {
-    const val = document.getElementById(`str_${addr}`).value;
-    const hex = stringToHex(val, maxLen);
-    sendRequest(addr, hex);
-};
-
-const sleep = (ms) => new Promise(res => setTimeout(res, ms));
-
-window.handleMultiSet = async (writes) => {
-    for (const item of writes) {
-        sendRequest(item.address, item.value);
-        await sleep(250); 
-    }
-};
 
 function floatToHex(value) {
     const view = new DataView(new ArrayBuffer(4));
     view.setFloat32(0, parseFloat(value) || 0, false);
-    return Array.from(new Uint8Array(view.buffer)).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+    return Array.from(new Uint8Array(view.buffer))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('').toUpperCase();
 }
-
-window.handleFloat = (addr, isRGB, force, maxLen) => {
-    const inputVal = document.getElementById(`in_${addr}`).value;
-    let hex = floatToHex(inputVal);
-    if (isRGB) hex = hex + hex + hex; 
-    sendRequest(addr, hex);
-};
-
-window.handleRGBGroup = (addr) => {
-    const r = floatToHex(document.getElementById(`r_${addr}`).value);
-    const g = floatToHex(document.getElementById(`g_${addr}`).value);
-    const b = floatToHex(document.getElementById(`b_${addr}`).value);
-    sendRequest(addr, r + g + b); 
-};
-
-window.handleDropdown = (addr) => 
-    sendRequest(addr, document.getElementById(`sel_${addr}`).value);
 
 function sendRequest(addr, val) {
     const ip = document.getElementById('ps3_ip').value;
     if (!ip) return;
     fetch(`http://${ip}/setmem.ps3mapi?proc=0&addr=${addr}&val=${val}`, { mode: 'no-cors' }).catch(() => {});
 }
+
+window.handleDropdown = (addr) => 
+    sendRequest(addr, document.getElementById(`sel_${addr}`).value);
 
 window.goBack = () => window.autoScanRTM();
