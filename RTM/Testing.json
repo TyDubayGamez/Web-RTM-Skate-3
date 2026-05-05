@@ -1,27 +1,36 @@
 {
   "sections": [
     {
-      "title": "World Settings",
+      "title": "Read Test",
       "controls": [
         {
-          "type": "dropdown",
-          "label": "Time of Day",
-          "address": "0x018E0810",
-          "options": [
-            { "name": "Day", "value": "3F800000" },
-            { "name": "Sunset", "value": "3F000000" },
-            { "name": "Night", "value": "BF800000" }
-          ]
+          "type": "float_input",
+          "label": "Test Float",
+          "address": "30060070",
+          "read_length": 4
+        },
+        {
+          "type": "rgb_input",
+          "label": "Test RGB",
+          "address": "30070030",
+          "read_length": 12
         },
         {
           "type": "dropdown",
-          "label": "Gravity Mode",
-          "address": "0x00A12344",
+          "label": "Test Dropdown",
+          "address": "018E0813",
+          "read_length": 1,
           "options": [
-            { "name": "Normal", "value": "41100000" },
-            { "name": "Low Gravity", "value": "40800000" },
-            { "name": "Super Jump", "value": "41C80000" }
+            { "name": "Goofy", "value": "00" },
+            { "name": "Regular", "value": "01" }
           ]
+        },
+        {
+          "type": "string_input",
+          "label": "Test Name",
+          "address": "30000000",
+          "max_len": 16,
+          "read_length": 16
         }
       ]
     }
