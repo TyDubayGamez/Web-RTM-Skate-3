@@ -18,6 +18,18 @@
         { "type": "rgb_input", "label": "Hair Color", "address": "30070070" }
       ]
     },
+
+    {
+      "title": "Graphics",
+      "controls": [
+        { "type": "graphics", "label": "Hat Graphic", "address": "3005C500" },
+        { "type": "graphics", "label": "Board Graphic", "address": "3005C4F0" },
+        { "type": "graphics", "label": "Shirt Graphic", "address": "3005C4C0" },
+        { "type": "graphics", "label": "Upper Body Tattoo", "address": "3005C4D0" },
+        { "type": "graphics", "label": "Lower Body Tattoo", "address": "3005C4C0" }
+      ]
+    },
+
     {
       "title": "Style Settings & Gestures",
       "controls": [
