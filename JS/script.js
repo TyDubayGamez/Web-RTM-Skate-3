@@ -46,8 +46,9 @@ window.autoScanRTM = async () => {
             });
         }
     } catch (e) {
-        if (fileList)
+        if (fileList) {
             fileList.innerHTML = `<div class="error-msg">Error: Missing manifest.json</div>`;
+        }
     }
 };
 
@@ -93,7 +94,7 @@ function renderToolUI(data, fileName) {
             const force = ctrl.force_type || '';
             const mLen = ctrl.max_len || 4;
 
-            // Handle text strings
+            // String input
             if (ctrl.type === "string_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
@@ -102,7 +103,7 @@ function renderToolUI(data, fileName) {
                 `;
             }
 
-            // Handle RGB inputs
+            // RGB input
             else if (ctrl.type === "rgb_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
@@ -115,7 +116,7 @@ function renderToolUI(data, fileName) {
                 `;
             }
 
-            // Handle float/int values
+            // Float / int input
             else if (ctrl.type === "float_input") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
@@ -127,7 +128,7 @@ function renderToolUI(data, fileName) {
                 `;
             }
 
-            // Multi-write
+            // Multi write
             else if (ctrl.type === "multi_button") {
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
@@ -137,15 +138,17 @@ function renderToolUI(data, fileName) {
                 `;
             }
 
-            // Dropdown
+            // Dropdown (FIXED: value | name)
             else if (ctrl.type === "dropdown") {
                 let opts = ctrl.options
-                    .map(o => `<option value="${o.value}">${o.value}</option>`)
+                    .map(o => `<option value="${o.value}">${o.value} | ${o.name}</option>`)
                     .join('');
 
                 row.innerHTML = `
                     <label>${ctrl.label}</label>
-                    <select id="sel_${ctrl.address}">${opts}</select>
+                    <select id="sel_${ctrl.address}">
+                        ${opts}
+                    </select>
                     <button onclick="handleDropdown('${ctrl.address}')">Set</button>
                 `;
             }
@@ -157,7 +160,7 @@ function renderToolUI(data, fileName) {
     });
 }
 
-// Convert text to hex
+// String to hex
 function stringToHex(str, maxLen) {
     let hex = "";
     let cleanStr = str.substring(0, maxLen);
@@ -169,17 +172,17 @@ function stringToHex(str, maxLen) {
     return hex + "00";
 }
 
-// Write string data
+// Write string
 window.handleString = (addr, maxLen) => {
     const val = document.getElementById(`str_${addr}`).value;
     const hex = stringToHex(val, maxLen);
     sendRequest(addr, hex);
 };
 
-// Pause helper
+// Sleep helper
 const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
-// Input sanitizer
+// Input validation
 window.validateInput = (input, filter, force) => {
     let patternStr = "";
 
@@ -254,8 +257,9 @@ window.handleRGBGroup = (addr) => {
 };
 
 // Dropdown writer
-window.handleDropdown = (addr) =>
+window.handleDropdown = (addr) => {
     sendRequest(addr, document.getElementById(`sel_${addr}`).value);
+};
 
 // Send request
 function sendRequest(addr, val) {
@@ -267,5 +271,5 @@ function sendRequest(addr, val) {
     }).catch(() => {});
 }
 
-// Back button
+// Back
 window.goBack = () => window.autoScanRTM();
